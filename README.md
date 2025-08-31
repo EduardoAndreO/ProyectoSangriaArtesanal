@@ -1,3 +1,30 @@
+# ProyectoFinalMovil
+
+Proyecto Fase #1 — Programación Móvil (React Native + TypeScript)
+
+## Requisitos
+- Node.js 18 LTS
+- Java JDK 17
+- Android Studio (para emulador)
+
+## Instalación
+npm install
+
+## Ejecutar
+npx react-native run-android
+
+## Estructura Necesaria
+- src/components: CustomInput, CustomButton
+- src/screens: LoginScreen, HomeScreen
+- src/navigation: AppNavigator
+- src/assets: logo.png
+
+## revisión en el video
+- Validaciones en Login (email, teléfono, contraseña)
+- Imagen local visible
+- Navegación Login → Home
+- Uso de componentes reutilizables
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
