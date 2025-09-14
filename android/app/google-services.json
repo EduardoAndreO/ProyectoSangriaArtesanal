@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "18638044325",
+    "project_id": "sangriaartesanal-444dd",
+    "storage_bucket": "sangriaartesanal-444dd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:18638044325:android:1dcce597543df52ceca14c",
+        "android_client_info": {
+          "package_name": "com.sangriaartesanal"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC322GbWY2QGdFZTexaCkgst6RZYH--Yeg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

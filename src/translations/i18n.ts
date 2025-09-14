@@ -9,13 +9,17 @@ const resources = {
         "phone": "Phone",
         "password": "Password",
         "submit": "Log In",
+        "register": "Register",
+        "register_success_title": "Registration Successful",
+        "register_success_message": "Your account has been created.",
         "errors": {
           "email_required": "Email is required",
           "email_invalid": "Invalid email",
           "phone_required": "Phone is required",
           "phone_invalid": "Invalid phone",
           "password_required": "Password is required",
-          "password_min": "Min 6 characters"
+          "password_min": "Min 6 characters",
+          "register_failed_title": "Registration Failed"
         }
       },
       "home": {
@@ -65,13 +69,17 @@ const resources = {
         "phone": "Teléfono",
         "password": "Contraseña",
         "submit": "Iniciar sesión",
+        "register": "Registrarse",
+        "register_success_title": "Registro Exitoso",
+        "register_success_message": "Tu cuenta ha sido creada.",
         "errors": {
           "email_required": "Email es requerido",
           "email_invalid": "Email no válido",
           "phone_required": "Teléfono es requerido",
           "phone_invalid": "Teléfono no válido",
           "password_required": "Contraseña requerida",
-          "password_min": "Min 6 caracteres"
+          "password_min": "Min 6 caracteres",
+          "register_failed_title": "Error de Registro"
         }
       },
       "home": {
@@ -121,13 +129,17 @@ const resources = {
         "phone": "Téléphone",
         "password": "Mot de passe",
         "submit": "Connexion",
+        "register": "S'inscrire",
+        "register_success_title": "Inscription Réussie",
+        "register_success_message": "Votre compte a été créé.",
         "errors": {
           "email_required": "Email est requis",
           "email_invalid": "Email invalide",
           "phone_required": "Téléphone est requis",
           "phone_invalid": "Téléphone invalide",
           "password_required": "Mot de passe est requis",
-          "password_min": "Min 6 caractères"
+          "password_min": "Min 6 caractères",
+          "register_failed_title": "Échec de l'inscription"
         }
       },
       "home": {

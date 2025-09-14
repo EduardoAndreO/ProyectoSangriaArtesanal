@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, KeyboardAvoidingView, Platform, ImageBackground, Image } from 'react-native';
+import { View, StyleSheet, Text, KeyboardAvoidingView, Platform, ImageBackground, Image, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { colors } from '../theme/Styles';
+import { registerWithEmail } from '../services/FirebaseAuth';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Login'>;
 
@@ -32,9 +33,23 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     return Object.keys(e).length === 0;
   }
 
-  async function onSubmit() {
+  async function onLogin() {
+    // For login, you might not need the phone, but we keep validation for now
     if (!validate()) return;
     await login();
+  }
+
+  async function onRegister() {
+    if (!validate()) return;
+    try {
+      await registerWithEmail(email, password, { phone });
+      Alert.alert(t('login.register_success_title'), t('login.register_success_message'));
+      // Optional: automatically log in the user after registration
+      // await login(); 
+    } catch (error: any) {
+      console.error('Registration failed:', error);
+      Alert.alert(t('login.errors.register_failed_title'), error.message);
+    }
   }
 
   const bgImage = require('../assets/logo_sangria.png');
@@ -49,7 +64,8 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           <CustomInput label={t('login.email')} value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" error={errors.email} />
           <CustomInput label={t('login.phone')} value={phone} onChangeText={setPhone} keyboardType="phone-pad" error={errors.phone} />
           <CustomInput label={t('login.password')} value={password} onChangeText={setPassword} isPassword error={errors.password} />
-          <CustomButton title={t('login.submit')} onPress={onSubmit} style={{ marginTop: 16 }} />
+          <CustomButton title={t('login.submit')} onPress={onLogin} style={{ marginTop: 16 }} />
+          <CustomButton title={t('login.register')} onPress={onRegister} style={{ marginTop: 8 }} />
         </View>
       </KeyboardAvoidingView>
     </ImageBackground>
