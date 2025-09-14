@@ -4,6 +4,9 @@ import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity } from
 import { colors } from '../theme/Styles';
 import { useCart } from '../context/CartContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/AppNavigator';
 
 const productImages = [
   require('../assets/sangria_fresa.png'),
@@ -16,9 +19,14 @@ const productImages = [
 const CartScreen = () => {
   const { cart, removeFromCart, clearCart } = useCart();
   const bgImage = require('../assets/logo_sangria.png');
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   return (
     <ImageBackground source={bgImage} style={styles.bg} imageStyle={{ opacity: 0.06, resizeMode: 'contain' }}>
       <View style={styles.container}>
+        <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.homeButton}>
+          <MaterialCommunityIcons name="home" size={30} color={colors.primary} />
+        </TouchableOpacity>
         <Text style={styles.title}>Carrito de Compras</Text>
         {cart.length === 0 ? (
           <View style={styles.emptyBox}>
@@ -149,6 +157,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 4,
     fontSize: 14,
+  },
+  homeButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    padding: 10,
   },
 });
 
