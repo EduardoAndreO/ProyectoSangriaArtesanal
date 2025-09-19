@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
+import { useTranslation } from 'react-i18next';
 
 const productImages = [
   require('../assets/sangria_fresa.png'),
@@ -20,17 +21,18 @@ const CartScreen = () => {
   const { cart, removeFromCart, clearCart } = useCart();
   const bgImage = require('../assets/logo_sangria.png');
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const { t } = useTranslation();
 
   return (
     <ImageBackground source={bgImage} style={styles.bg} imageStyle={{ opacity: 0.06, resizeMode: 'contain' }}>
       <View style={styles.container}>
         <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.homeButton}>
-          <MaterialCommunityIcons name="home" size={30} color={colors.primary} />
+          <Text style={{ fontSize: 30, color: colors.primary }}>🏠</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Carrito de Compras</Text>
+        <Text style={styles.title}>{t('Carro de Compras')}</Text>
         {cart.length === 0 ? (
           <View style={styles.emptyBox}>
-            <Text style={styles.emptyText}>Tu carrito está vacío.</Text>
+            <Text style={styles.emptyText}>{t('Carro Vacio')}</Text>
           </View>
         ) : (
           <View style={styles.cartList}>
@@ -38,19 +40,41 @@ const CartScreen = () => {
               <View key={item.name} style={styles.cartItem}>
                 <Image source={productImages[item.imageIdx]} style={styles.cartImg} />
                 <View style={{ flex: 1 }}>
-                  <Text style={styles.cartName}>{item.name}</Text>
-                  <Text style={styles.cartDesc}>{item.description}</Text>
+                  <Text style={styles.cartName}>{t(item.name)}</Text>
+                  <Text style={styles.cartDesc}>{t(item.description)}</Text>
                   <Text style={styles.cartPrice}>{item.price} x{item.quantity}</Text>
                 </View>
                 <TouchableOpacity onPress={() => removeFromCart(idx)} style={styles.removeBtn}>
-                  <MaterialCommunityIcons name="close" size={22} color={colors.error} />
+                  <Text style={{ fontSize: 22, color: colors.error }}>❌</Text>
                 </TouchableOpacity>
               </View>
             ))}
-            <TouchableOpacity onPress={clearCart} style={styles.clearBtn}>
-              <MaterialCommunityIcons name="cart-off" size={20} color={colors.primary} />
-              <Text style={styles.clearText}>Vaciar carrito</Text>
-            </TouchableOpacity>
+
+            <View style={styles.totalContainer}>
+              <Text style={styles.totalText}>
+              {t('Carrito Total')}: €{cart.reduce((total, item) => {
+                // Remove any non-numeric characters except dot and minus sign
+                const numericPriceString = item.price.replace(/[^0-9.-]+/g, '');
+                const price = parseFloat(numericPriceString) || 0;
+                return total + price * item.quantity;
+              }, 0).toFixed(2)}
+              </Text>
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity onPress={clearCart} style={styles.clearBtn}>
+                <Text style={{ fontSize: 20, color: colors.primary }}>🗑️</Text>
+                <Text style={styles.clearText}>{t('Limpiar Carrito')}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Payment')}
+                style={styles.paymentBtn}
+              >
+                <Text style={{ fontSize: 20, color: colors.white }}>💳</Text>
+                <Text style={styles.paymentText}>{t('Proceder al Pago')}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </View>
@@ -145,18 +169,65 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     padding: 4,
   },
+  totalContainer: {
+    backgroundColor: colors.white,
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 16,
+    marginBottom: 16,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 2,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  totalText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.primary,
+    textAlign: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 16,
+  },
   clearBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    alignSelf: 'flex-end',
-    marginTop: 10,
-    padding: 6,
+    padding: 12,
+    backgroundColor: colors.white,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.primary,
   },
   clearText: {
     color: colors.primary,
     fontWeight: 'bold',
     marginLeft: 4,
     fontSize: 14,
+  },
+  paymentBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  paymentText: {
+    color: colors.white,
+    fontWeight: 'bold',
+    marginLeft: 8,
+    fontSize: 16,
   },
   homeButton: {
     position: 'absolute',

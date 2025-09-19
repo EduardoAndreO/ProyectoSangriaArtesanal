@@ -25,10 +25,9 @@ const CustomInput: React.FC<Props> = ({ label, error, style, isPassword, ...rest
         {isPassword && (
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIconContainer}>
             <MaterialCommunityIcons
-              name={showPassword ? 'eye-off-outline' : 'eye-outline'}
-              size={26}
+              name={showPassword ? 'eye-off' : 'eye'}
+              size={24}
               color={colors.primary}
-              style={{ padding: 2 }}
             />
           </TouchableOpacity>
         )}

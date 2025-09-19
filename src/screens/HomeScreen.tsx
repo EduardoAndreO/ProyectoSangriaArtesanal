@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, Dimensions, ImageBackground, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, ImageBackground, TouchableOpacity } from 'react-native';
 // Importar imágenes de productos como variables
 const imgFresa = require('../assets/sangria_fresa.png');
 const imgCitrica = require('../assets/sangria_citrica.png');
@@ -30,6 +30,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const { t, i18n } = useTranslation();
   const { logout } = useAuth();
   const { addToCart } = useCart();
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
   // Obtener productos multilenguaje
   const products = t('home.products', { returnObjects: true }) as Array<any>;
@@ -47,16 +48,12 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <ImageBackground source={bgImage} style={styles.bg} imageStyle={{ opacity: 0.04, resizeMode: 'contain' }}>
       <View style={styles.container}>
+        {/* Header con título grande centrado */}
         <View style={styles.header}>
           <Text style={styles.logoText}>Sangría Pasión</Text>
-          <View style={{ flexDirection: 'row' }}>
-            <CustomButton title="Carrito" variant="ghost" onPress={() => navigation.navigate('Cart')} style={{ marginRight: 10 }} />
-            <TouchableOpacity onPress={logout} style={{ padding: 6, marginLeft: 2 }}>
-              <MaterialCommunityIcons name="close" size={22} color={colors.primary} />
-            </TouchableOpacity>
-          </View>
         </View>
 
+        {/* Contenido principal */}
         <Text style={styles.sectionTitle}>{t('home.product_title')}</Text>
 
         <ScrollView contentContainerStyle={styles.productsList} showsVerticalScrollIndicator={false}>
@@ -87,15 +84,73 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           ))}
         </ScrollView>
 
-        {/* Language Switcher */}
-        <View style={styles.footer}>
-          <Text style={styles.footerText}>{t('home.select_language')}</Text>
-          <View style={styles.languageSwitcher}>
-            <CustomButton title="ES" variant="ghost" onPress={() => i18n.changeLanguage('es')} />
-            <CustomButton title="EN" variant="ghost" onPress={() => i18n.changeLanguage('en')} />
-            <CustomButton title="FR" variant="ghost" onPress={() => i18n.changeLanguage('fr')} />
-          </View>
+        {/* Barra de navegación inferior */}
+        <View style={styles.bottomNav}>
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => navigation.navigate('Cart')}
+          >
+            <Text style={styles.navIcon}>🛒</Text>
+            <Text style={styles.navText}>{t('home.cart.title')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => navigation.navigate('Calendar')}
+          >
+            <Text style={styles.navIcon}>📅</Text>
+            <Text style={styles.navText}>{t('home.calendar.title')}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={() => setShowMenu(!showMenu)}
+          >
+            <Text style={styles.navIcon}>🌐</Text>
+            <Text style={styles.navText}>{i18n.language.toUpperCase()}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.navItem}
+            onPress={logout}
+          >
+            <Text style={styles.navIcon}>❌</Text>
+            <Text style={styles.navText}>{t('home.logout')}</Text>
+          </TouchableOpacity>
         </View>
+
+        {/* Language Switcher Modal */}
+        {showMenu && (
+          <View style={styles.languageModal}>
+            <View style={styles.languageModalContent}>
+              <Text style={styles.languageModalTitle}>{t('home.select_language')}</Text>
+              <TouchableOpacity
+                style={styles.languageOption}
+                onPress={() => { i18n.changeLanguage('es'); setShowMenu(false); }}
+              >
+                <Text style={styles.languageOptionText}>🇪🇸 Español</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.languageOption}
+                onPress={() => { i18n.changeLanguage('en'); setShowMenu(false); }}
+              >
+                <Text style={styles.languageOptionText}>🇺🇸 English</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.languageOption}
+                onPress={() => { i18n.changeLanguage('fr'); setShowMenu(false); }}
+              >
+                <Text style={styles.languageOptionText}>🇫🇷 Français</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setShowMenu(false)}
+              >
+                <Text style={styles.closeButtonText}>{t('Cerrar')}</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
     </ImageBackground>
   );
@@ -113,18 +168,42 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 10,
+    paddingTop: 40,
+    paddingBottom: 5,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  spacer: {
+    flex: 1,
+  },
+  headerButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  smallButton: {
+    marginRight: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+    minWidth: 70,
+  },
+  logoutButton: {
+    padding: 6,
+    marginLeft: 2,
   },
   logoText: {
     fontFamily: 'Georgia',
-    fontSize: 24,
+    fontSize: 42,
     fontWeight: 'bold',
     color: colors.primary,
+    textAlign: 'center',
+    marginTop: 10,
+    marginBottom: 10,
   },
   sectionTitle: {
     fontSize: 22,
@@ -206,6 +285,115 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  dropdownMenu: {
+    position: 'absolute',
+    bottom: 50,
+    backgroundColor: colors.white,
+    borderRadius: 8,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    borderWidth: 1,
+    borderColor: colors.border,
+    minWidth: 80,
+  },
+  dropdownItem: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: colors.text,
+    textAlign: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  bottomNav: {
+    flexDirection: 'row',
+    backgroundColor: colors.white,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  navItem: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+  },
+  navIcon: {
+    fontSize: 24,
+    color: colors.primary,
+  },
+  navText: {
+    fontSize: 12,
+    color: colors.primary,
+    marginTop: 4,
+    fontWeight: '600',
+  },
+  languageModal: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  languageModalContent: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    padding: 24,
+    marginHorizontal: 32,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 10,
+    minWidth: 280,
+  },
+  languageModalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.text,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  languageOption: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    marginBottom: 8,
+    borderRadius: 8,
+    backgroundColor: colors.background,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  languageOptionText: {
+    fontSize: 16,
+    color: colors.text,
+    textAlign: 'center',
+    fontWeight: '500',
+  },
+  closeButton: {
+    marginTop: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    backgroundColor: colors.primary,
+  },
+  closeButtonText: {
+    fontSize: 16,
+    color: colors.white,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });
 

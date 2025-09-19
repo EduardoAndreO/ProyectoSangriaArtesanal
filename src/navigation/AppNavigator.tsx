@@ -4,6 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
 import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
+import CalendarScreen from '../screens/CalendarScreen';
+import PaymentScreen from '../screens/PaymentScreen';
 import { useAuth } from '../context/AuthContext';
 import { View, ActivityIndicator } from 'react-native';
 import { colors } from '../theme/Styles';
@@ -12,6 +14,8 @@ export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   Cart: undefined;
+  Calendar: undefined;
+  Payment: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -34,6 +38,8 @@ const AppNavigator = () => {
           <>
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Cart" component={CartScreen} />
+            <Stack.Screen name="Calendar" component={CalendarScreen} />
+            <Stack.Screen name="Payment" component={PaymentScreen} />
           </>
         ) : (
           <Stack.Screen name="Login" component={LoginScreen} />

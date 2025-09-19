@@ -5,6 +5,6 @@ export function isEmailValid(email: string) {
 
 export function isPhoneValid(phone: string) {
   // validación simple: 7-15 dígitos y opcionales + o espacios
-  const re = /^[+]?[\d\s\-]{7,15}$/;
+  const re = /^[+]?[\d\s-]{7,15}$/;
   return re.test(phone);
 }
