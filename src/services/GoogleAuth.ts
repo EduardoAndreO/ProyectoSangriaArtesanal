@@ -22,7 +22,7 @@ export async function signIn(): Promise<AuthorizeResult> {
     await AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(result));
     return result;
   } catch (err: unknown) {
-    console.error('signIn error', err);
+    console.error('signIn error', JSON.stringify(err, Object.getOwnPropertyNames(err)));
     throw err;
   }
 }

@@ -12,7 +12,20 @@
           "package_name": "com.sangriaartesanal"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "18638044325-lrqea95icgrpc5gvtjg729722oelln1a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sangriaartesanal",
+            "certificate_hash": "3a839705bc2a94a2c760738fd9325698bf7abf6c"
+          }
+        },
+        {
+          "client_id": "18638044325-uso0mpp87hanqamt26lioqtv7lpso9sm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC322GbWY2QGdFZTexaCkgst6RZYH--Yeg"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "18638044325-uso0mpp87hanqamt26lioqtv7lpso9sm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
